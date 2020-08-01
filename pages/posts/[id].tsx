@@ -18,8 +18,15 @@ const Card = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 `;
 
-const Delete = styled.button`
-  float: right;
+const Btn = styled.button`
+  float: ${(props) => props.float};
+  background-color: ${(props) => props.background || 'none'};
+  border: none;
+  color: #fff;
+  text-align: center;
+  margin: 1%;
+  padding: 1%;
+  border-radius: 5px;
 `;
 
 interface PostProps {
@@ -47,6 +54,7 @@ export default function Post({ post }: PostProps) {
         id: +new Date(),
       },
     });
+    Router.push('/');
   };
 
   return (
@@ -54,17 +62,29 @@ export default function Post({ post }: PostProps) {
       <Head>
         <title>test_task</title>
       </Head>
-      <Delete onClick={() => deleteItem()}>X</Delete>
+      <Btn background="#6B2634" float="right" onClick={() => deleteItem()}>
+        X
+      </Btn>
       <h2>{post.title}</h2>
       <p>{post.body} </p>
       <p>Comments:</p>
       {post.comments.map((item) => (
         <p key={item.id}>{item.body} </p>
       ))}
-      <input type="text" onChange={(e) => changeComment(e.target.value)} />
-      <button onClick={() => sendComment()}>Send</button>
+      {post.comments.length ? '' : <mark>nothing</mark>}
       <hr />
-      <button onClick={() => Router.push(`/`)}>go home</button>
+      <input
+        type="text"
+        placeholder="comment"
+        onChange={(e) => changeComment(e.target.value)}
+      />
+      <Btn background="#00385C" onClick={() => sendComment()}>
+        Send
+      </Btn>
+      <hr />
+      <Btn background="#305E99" onClick={() => Router.push(`/`)}>
+        go home
+      </Btn>
     </Card>
   );
 }
